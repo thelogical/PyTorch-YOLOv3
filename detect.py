@@ -110,10 +110,11 @@ if __name__ == "__main__":
             unique_labels = detections[:, -1].cpu().unique()
             n_cls_preds = len(unique_labels)
             bbox_colors = random.sample(colors, n_cls_preds)
+            f = open("detections.txt",'w')
             for x1, y1, x2, y2, conf, cls_conf, cls_pred in detections:
 
                 print("\t+ Label: %s, Conf: %.5f" % (classes[int(cls_pred)], cls_conf.item()))
-
+                f.write(x1,y1,x2,y2,cls_conf.item(),classes[int(cls_pred)],'\n')
                 box_w = x2 - x1
                 box_h = y2 - y1
 
@@ -131,7 +132,7 @@ if __name__ == "__main__":
                     verticalalignment="top",
                     bbox={"color": color, "pad": 0},
                 )
-
+        f.close()
         # Save generated image with detections
         plt.axis("off")
         plt.gca().xaxis.set_major_locator(NullLocator())
